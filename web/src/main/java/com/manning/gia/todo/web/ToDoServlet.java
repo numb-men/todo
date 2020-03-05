@@ -27,68 +27,62 @@ public class ToDoServlet extends HttpServlet {
     }
 
     private String processRequest(String servletPath, HttpServletRequest request) {
-        if(servletPath.equals(FIND_ALL_SERVLET_PATH)) {
+        if (servletPath.equals(FIND_ALL_SERVLET_PATH)) {
             List<ToDoItem> toDoItems = toDoRepository.findAll();
             request.setAttribute("toDoItems", toDoItems);
             request.setAttribute("stats", determineStats(toDoItems));
             request.setAttribute("filter", "all");
             return INDEX_PAGE;
-        }
-        else if(servletPath.equals("/active")) {
+        } else if (servletPath.equals("/active")) {
             List<ToDoItem> toDoItems = toDoRepository.findAll();
             request.setAttribute("toDoItems", filterBasedOnStatus(toDoItems, true));
             request.setAttribute("stats", determineStats(toDoItems));
             request.setAttribute("filter", "active");
             return INDEX_PAGE;
-        }
-        else if(servletPath.equals("/completed")) {
+        } else if (servletPath.equals("/completed")) {
             List<ToDoItem> toDoItems = toDoRepository.findAll();
             request.setAttribute("toDoItems", filterBasedOnStatus(toDoItems, false));
             request.setAttribute("stats", determineStats(toDoItems));
             request.setAttribute("filter", "completed");
             return INDEX_PAGE;
         }
-        if(servletPath.equals("/insert")) {
+        if (servletPath.equals("/insert")) {
             ToDoItem toDoItem = new ToDoItem();
             toDoItem.setName(request.getParameter("name"));
             toDoRepository.insert(toDoItem);
             return "/" + request.getParameter("filter");
-        }
-        else if(servletPath.equals("/update")) {
+        } else if (servletPath.equals("/update")) {
             ToDoItem toDoItem = toDoRepository.findById(Long.parseLong(request.getParameter("id")));
 
-            if(toDoItem != null) {
+            if (toDoItem != null) {
                 toDoItem.setName(request.getParameter("name"));
                 toDoRepository.update(toDoItem);
             }
 
             return "/" + request.getParameter("filter");
-        }
-        else if(servletPath.equals("/delete")) {
+        } else if (servletPath.equals("/delete")) {
             ToDoItem toDoItem = toDoRepository.findById(Long.parseLong(request.getParameter("id")));
 
-            if(toDoItem != null) {
+            if (toDoItem != null) {
                 toDoRepository.delete(toDoItem);
             }
 
             return "/" + request.getParameter("filter");
-        }
-        else if(servletPath.equals("/toggleStatus")) {
+        } else if (servletPath.equals("/toggleStatus")) {
             ToDoItem toDoItem = toDoRepository.findById(Long.parseLong(request.getParameter("id")));
 
-            if(toDoItem != null) {
+            if (toDoItem != null) {
                 boolean completed = "on".equals(request.getParameter("toggle")) ? true : false;
                 toDoItem.setCompleted(completed);
                 toDoRepository.update(toDoItem);
             }
 
             return "/" + request.getParameter("filter");
-        }
-        else if(servletPath.equals("/clearCompleted")) {
+        } else if (servletPath.equals("/clearCompleted")) {
             List<ToDoItem> toDoItems = toDoRepository.findAll();
 
-            for(ToDoItem toDoItem : toDoItems) {
-                if(toDoItem.isCompleted()) {
+            for (ToDoItem toDoItem : toDoItems) {
+                if (toDoItem.isCompleted()) {
                     toDoRepository.delete(toDoItem);
                 }
             }
@@ -102,8 +96,8 @@ public class ToDoServlet extends HttpServlet {
     private List<ToDoItem> filterBasedOnStatus(List<ToDoItem> toDoItems, boolean active) {
         List<ToDoItem> filteredToDoItems = new ArrayList<ToDoItem>();
 
-        for(ToDoItem toDoItem : toDoItems) {
-            if(toDoItem.isCompleted() != active) {
+        for (ToDoItem toDoItem : toDoItems) {
+            if (toDoItem.isCompleted() != active) {
                 filteredToDoItems.add(toDoItem);
             }
         }
@@ -114,11 +108,10 @@ public class ToDoServlet extends HttpServlet {
     private ToDoListStats determineStats(List<ToDoItem> toDoItems) {
         ToDoListStats toDoListStats = new ToDoListStats();
 
-        for(ToDoItem toDoItem : toDoItems) {
-            if(toDoItem.isCompleted()) {
+        for (ToDoItem toDoItem : toDoItems) {
+            if (toDoItem.isCompleted()) {
                 toDoListStats.addCompleted();
-            }
-            else {
+            } else {
                 toDoListStats.addActive();
             }
         }

@@ -24,9 +24,9 @@ public class InMemoryToDoRepository implements ToDoRepository {
     public List<ToDoItem> findAllActive() {
         List<ToDoItem> activeToDos = new ArrayList<ToDoItem>();
 
-        synchronized(toDos) {
-            for(ToDoItem toDoItem : toDos.values()) {
-                if(!toDoItem.isCompleted()) {
+        synchronized (toDos) {
+            for (ToDoItem toDoItem : toDos.values()) {
+                if (!toDoItem.isCompleted()) {
                     activeToDos.add(toDoItem);
                 }
             }
@@ -39,9 +39,9 @@ public class InMemoryToDoRepository implements ToDoRepository {
     public List<ToDoItem> findAllCompleted() {
         List<ToDoItem> completedToDos = new ArrayList<ToDoItem>();
 
-        synchronized(toDos) {
-            for(ToDoItem toDoItem : toDos.values()) {
-                if(toDoItem.isCompleted()) {
+        synchronized (toDos) {
+            for (ToDoItem toDoItem : toDos.values()) {
+                if (toDoItem.isCompleted()) {
                     completedToDos.add(toDoItem);
                 }
             }

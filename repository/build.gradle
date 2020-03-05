@@ -1,13 +1,8 @@
-apply from: "$rootDir/gradle/integrationTest.gradle"
+repositories {
+    mavenCentral()
+}
 
 dependencies {
     compile project(':model')
     testCompile 'junit:junit:4.11'
-}
-
-tasks.withType(Test) {
-    testLogging {
-        showStandardStreams = true
-        exceptionFormat 'full'
-    }
 }
